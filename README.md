@@ -15,10 +15,7 @@ Stable, data-dense, single-visual **English HTML** reporting skill for GEO brand
 
 | Product | Visual | HTML Sample |
 |---|---|---|
-| EasyLaTeX | <img src="examples/showcase/images/EasyLaTeX.jpg" alt="EasyLaTeX report" width="240"> | [EasyLaTeX.html](examples/showcase/html/EasyLaTeX.html) |
-| Hithium | <img src="examples/showcase/images/Hithium.jpg" alt="Hithium report" width="240"> | [Hithium.html](examples/showcase/html/Hithium.html) |
 | LaserChina | <img src="examples/showcase/images/LaserChina.jpg" alt="LaserChina report" width="240"> | [LaserChina.html](examples/showcase/html/LaserChina.html) |
-| Mileseey Golf | <img src="examples/showcase/images/Mileseey%20Golf.jpg" alt="Mileseey Golf report" width="240"> | [Mileseey Golf.html](examples/showcase/html/Mileseey%20Golf.html) |
 | Producthunt | <img src="examples/showcase/images/Producthunt.jpg" alt="Producthunt report" width="240"> | [Producthunt.html](examples/showcase/html/Producthunt.html) |
 | Trip | <img src="examples/showcase/images/Trip.jpg" alt="Trip report" width="240"> | [Trip.html](examples/showcase/html/Trip.html) |
 | Ulike | <img src="examples/showcase/images/Ulike.jpg" alt="Ulike report" width="240"> | [Ulike.html](examples/showcase/html/Ulike.html) |
