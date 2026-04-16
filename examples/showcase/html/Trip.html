@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trip GEO Report - Dense Landscape</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --ph:#ff6154; --ink:#0f172a; --muted:#475569; --muted2:#94a3b8; --line:#e2e8f0; --panel:#ffffff; --ok:#10b981; --warn:#ef4444; }
+    * { box-sizing: border-box; }
+    body { margin:0; min-height:100vh; display:grid; place-items:center; padding:0; background:#f3f6fb; font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:var(--ink); }
+    .canvas { width:1200px; height:740px; border-radius:20px; overflow:hidden; background:#fff; border:1px solid rgba(15,23,42,.08); box-shadow:0 24px 64px rgba(15,23,42,.16); display:grid; grid-template-columns:320px 1fr; }
+
+    .sidebar { background:linear-gradient(160deg,#0b1220 0%,#0f172a 90%); color:#fff; padding:12px; display:grid; grid-template-rows:auto auto auto auto; gap:8px; align-content:start; }
+    .brand { display:flex; gap:10px; align-items:center; min-width:0; }
+    .logo-box { width:48px; height:48px; border-radius:12px; background:#fff; display:grid; place-items:center; flex-shrink:0; overflow:hidden; box-shadow:0 8px 18px rgba(255,97,84,.3); }
+    .logo-box img { width:100%; height:100%; object-fit:cover; display:block; }
+    .logo-fallback { display:none; width:100%; height:100%; align-items:center; justify-content:center; }
+    .brand h1 { margin:0; font:800 24px/1.05 Sora,Inter,sans-serif; letter-spacing:-.02em; }
+    .brand p { margin:4px 0 0; font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.1em; color:#fca5a0; line-height:1.2; }
+
+    .meta-grid { display:grid; gap:8px; padding:10px; border-radius:12px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.05); }
+    .meta-item { display:grid; gap:2px; }
+    .ml { font-size:8px; text-transform:uppercase; letter-spacing:.08em; color:#94a3b8; font-weight:800; line-height:1; }
+    .mv { font-size:11px; font-weight:700; line-height:1.2; color:#fff; word-break:break-word; }
+
+    .diag-title { font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.08em; color:#fff; line-height:1; }
+    .diag { background:linear-gradient(135deg,#ff6154,#ff9353); border-radius:12px; padding:10px; font-size:11px; line-height:1.35; font-weight:700; overflow-wrap:anywhere; box-shadow:0 10px 20px rgba(255,97,84,.28); }
+
+    .side-kpi { display:grid; gap:6px; align-content:start; min-height:0; align-self:start; }
+    .kpi-row { border:1px solid rgba(255,255,255,.12); border-radius:10px; background:rgba(255,255,255,.04); padding:7px 8px; display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .kpi-row .name { font-size:10px; color:#cbd5e1; font-weight:700; }
+    .kpi-row .val { font-size:11px; color:#fff; font-weight:800; }
+
+    .main { background:linear-gradient(180deg,#fcfdff,#f8fafc); padding:10px; display:grid; grid-template-rows:auto auto auto auto; gap:6px; min-height:0; align-content:start; }
+    .row { display:grid; gap:6px; min-height:0; }
+    .row.top { grid-template-columns:repeat(5,1fr); }
+    .row.mid { grid-template-columns:repeat(4,1fr); }
+    .row.bottom { grid-template-columns:1.2fr 1fr; }
+
+    .stat { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:7px; min-width:0; }
+    .stat .l { margin:0; font-size:8px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted2); font-weight:800; line-height:1; }
+    .stat .v { margin:5px 0 0; font:800 18px/1 Sora,Inter,sans-serif; color:var(--ph); letter-spacing:-.01em; }
+    .stat .s { margin:3px 0 0; font-size:9px; color:var(--muted); font-weight:700; line-height:1.2; }
+
+    .metric { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:7px; display:grid; gap:5px; min-width:0; min-height:0; }
+    .tag { width:fit-content; font-size:8px; font-weight:900; letter-spacing:.05em; border-radius:999px; padding:3px 7px; line-height:1; text-transform:uppercase; }
+    .tag.good { color:#047857; background:#ecfdf5; }
+    .tag.bad { color:#b91c1c; background:#fef2f2; }
+    .mn { margin:0; font-size:10px; font-weight:800; color:var(--ink); line-height:1.2; min-height:22px; }
+    .mv2 { margin:0; font:800 19px/1 Sora,Inter,sans-serif; }
+    .sub { margin:0; font-size:9px; color:var(--muted2); font-weight:800; }
+
+    .bar-r { display:grid; grid-template-columns:24px 1fr 40px; gap:4px; align-items:center; }
+    .bar-r .lab { font-size:7px; font-weight:800; color:var(--muted); text-transform:uppercase; }
+    .track { height:6px; background:#f1f5f9; border-radius:999px; overflow:hidden; }
+    .fill-you { height:100%; background:var(--ph); }
+    .fill-comp { height:100%; background:#cbd5e1; }
+    .num { font-size:7px; font-weight:800; color:var(--muted); text-align:right; }
+
+    .panel { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:7px; min-height:0; display:grid; gap:7px; align-content:start; overflow:hidden; }
+    .ph { display:flex; justify-content:space-between; align-items:center; gap:8px; margin:0; }
+    .pt { margin:0; font-size:9px; font-weight:900; letter-spacing:.07em; text-transform:uppercase; color:var(--ink); line-height:1.2; }
+    .hint { margin:0; font-size:8px; color:var(--muted2); font-weight:700; line-height:1.35; text-align:right; }
+
+    table { width:100%; border-collapse:collapse; table-layout:fixed; font-size:8px; }
+    th, td { padding:3px 3px; border-bottom:1px solid #eef2f7; text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:700; color:var(--muted); line-height:1.35; }
+    th:first-child, td:first-child { text-align:left; color:var(--ink); }
+    th { color:var(--muted2); font-weight:800; text-transform:uppercase; font-size:7px; letter-spacing:.05em; }
+
+    .list { margin:0; padding:0; list-style:none; display:grid; gap:5px; min-height:0; }
+    .li { font-size:7px; line-height:1.45; color:var(--muted); font-weight:700; padding:5px 6px; border-radius:8px; background:#f8fafc; border:1px solid #eef2f7; overflow-wrap:anywhere; }
+    .li.bad { border-color:#fee2e2; background:#fff7f7; color:#7f1d1d; }
+    .li.good { border-color:#dcfce7; background:#f0fdf4; color:#065f46; }
+
+    .sent-structure { display:grid; gap:6px; }
+    .sent-row { display:grid; grid-template-columns:54px 1fr 34px; gap:4px; align-items:center; }
+    .sent-row .sl, .sent-row .sv { font-size:7px; font-weight:800; color:var(--muted); line-height:1.3; }
+    .sent-row .sv { text-align:right; }
+    .sent-row .sb { height:6px; border-radius:999px; background:#eef2f7; overflow:hidden; }
+    .sent-row .sf { height:100%; border-radius:999px; }
+    .sf.pos { background:#10b981; }
+    .sf.neu { background:#f59e0b; }
+    .sf.neg { background:#ef4444; }
+    .score-box { border:1px solid var(--line); background:#fff; border-radius:8px; padding:6px 8px; display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+    .score-box .k { font-size:7px; font-weight:800; color:var(--muted2); text-transform:uppercase; letter-spacing:.05em; line-height:1; }
+    .score-box .v { font:800 14px/1 Sora,Inter,sans-serif; color:var(--ink); margin:0; }
+
+    .domains-table { table-layout:auto; font-size:7px; }
+    .domains-table th, .domains-table td { white-space:nowrap; line-height:1.3; padding:3px 4px; }
+    .domains-table th:first-child, .domains-table td:first-child { max-width:160px; overflow:hidden; text-overflow:ellipsis; }
+
+    .chips { display:flex; gap:4px; flex-wrap:wrap; min-width:0; }
+    .chip { font-size:7px; color:var(--muted); font-weight:700; background:#fff; border:1px solid var(--line); padding:3px 7px; border-radius:999px; max-width:120px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+    .footer { border-top:1px solid var(--line); padding-top:5px; display:grid; grid-template-columns:1fr 1fr auto; grid-template-rows:auto; gap:6px; min-width:0; align-items:start; }
+    .footer-metrics { grid-column:1; display:grid; grid-template-columns:1fr 1fr; gap:4px; min-width:0; }
+    .fm-card { border:1px solid var(--line); border-radius:8px; background:#fff; padding:3px 5px; min-width:0; }
+    .fm-card .k { margin:0; font-size:7px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--muted2); line-height:1; }
+    .fm-card .v { margin:3px 0 0; font-size:7px; font-weight:800; color:var(--ink); line-height:1.2; overflow-wrap:anywhere; }
+
+    .competitor-wrap { grid-column:2; display:grid; gap:4px; min-width:0; }
+    .comp-title { margin:0; font-size:7px; font-weight:900; text-transform:uppercase; letter-spacing:.06em; color:var(--muted2); line-height:1; }
+    .competitor-logos { display:flex; gap:4px; flex-wrap:wrap; min-width:0; }
+    .logo-pill { display:inline-flex; align-items:center; gap:3px; border:1px solid var(--line); border-radius:999px; background:#fff; padding:2px 5px 2px 2px; min-width:0; max-width:120px; }
+    .logo-pill img { width:11px; height:11px; border-radius:999px; display:block; flex-shrink:0; }
+    .logo-fb { width:11px; height:11px; border-radius:999px; display:none; align-items:center; justify-content:center; font-size:6px; font-weight:900; background:#e2e8f0; color:#334155; flex-shrink:0; text-transform:uppercase; }
+    .logo-pill .n { font-size:7px; font-weight:800; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
+
+    .f-right { text-align:right; grid-column:3; align-self:center; }
+    .f-right .a { font-size:7px; color:var(--muted2); font-weight:800; text-transform:uppercase; letter-spacing:.07em; margin:0; }
+    .f-right .b { font-size:11px; color:var(--ink); font:800 11px/1 Sora,Inter,sans-serif; margin:2px 0 0; }
+  </style>
+</head>
+<body>
+  <main class="canvas">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo-box">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAMAAACfWMssAAAAllBMVEUjR/////8AN/8UP/8eRP/Hzf4YQf8/Wf9wgP4AM//8/P8OPf+dpv7///0GOv/y8/7b3/5Ybv5gdf5zhP7t7/4AKv//uwCGk/+Jlv82UP8uTP6Nm/2kr/5RaP6+xv22v/7V2f5EX/2utv4AI/+Uof7i5f7M0f1cX9s2T/T5sxOrhp3/tACwipuTerWZfa+6joz1sC2+kYYdxSX/AAABdklEQVRIie3U7W6CMBQG4JYei6XQgoCAonMizM193v/N7QBGcOK6LVmyJbw/tJI+aXt6hJAxY8b8i4B5CrO6yOMzLhfK6JbV5JS8lbDyvLVJqhvaZWO1zyY4tg27PYN+C2VOqWfaKtwGQTBFlK6CYHVcRW6rGWuHnPFrknNmI5xKzoUQoIQisihi3IwQypouQyavUAIN5IRprclWR8VO6wjUWms38nDXO2GAEmf5lOrCxd/MwhJ57dm3lgG205waOg2kNCrrz9nwQc9gGQZWB/M4nuGy1fCSfagFA3mCGmsk8MK0GebYMR0s6+LirTpqsH370JV9SG3FYjxlKQDu4IJ+AnUa+l69j/39/LD/BjzWWbKH+WH++LG2DQyxAbwO0h50bM6fED5fXEqWJin+GyBJ0rpdIUiTBGq4CX1duhIBe3l9Y5flYYxB90UAB6SGfozt27YqkwNuMA281qW/A6v6/n4AySLLsi+87QYCl70yZsyYv5V3E3IU5e0EJOgAAAAASUVORK5CYII=" alt="Trip logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="logo-fallback" aria-hidden="true">
+            <svg width="34" height="34" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#ff6900"/><text x="20" y="25" text-anchor="middle" font-size="16" font-weight="700" fill="white">tr</text></svg>
+          </div>
+        </div>
+        <div>
+          <h1>Trip</h1>
+          <p>GEO / Presales Diagnosis</p>
+        </div>
+      </div>
+
+      <section class="meta-grid">
+        <div class="meta-item"><div class="ml">Generated</div><div class="mv">2026-04-16</div></div>
+        <div class="meta-item"><div class="ml">Date Range</div><div class="mv">2026-03-01 to 2026-04-15</div></div>
+        <div class="meta-item"><div class="ml">Data Source</div><div class="mv">2136 LLM responses across 4 platforms</div></div>
+      </section>
+
+      <div class="diag-title">Core Diagnosis / KEY INSIGHT</div>
+      <div class="diag">Trip has strong visibility and SOV, but citation authority is still weaker than category leaders. The key gap is converting broad mention volume into stable high-trust citations.</div>
+
+      <section class="side-kpi">
+        <div class="kpi-row"><span class="name">Overall Rank Snapshot</span><span class="val">#3 in Visibility / SOV / Citation</span></div>
+        <div class="kpi-row"><span class="name">Avg Position</span><span class="val">1.36 (Comp 1.71)</span></div>
+        <div class="kpi-row"><span class="name">Sentiment</span><span class="val">73.7 (Comp 93.2)</span></div>
+        <div class="kpi-row"><span class="name">Monthly Visits</span><span class="val">N/A (Comp 6.41B)</span></div>
+      </section>
+    </aside>
+
+    <section class="main">
+      <div class="row top">
+        <article class="stat"><p class="l">Topic Count</p><p class="v">8</p><p class="s">Covered business scenarios</p></article>
+        <article class="stat"><p class="l">Prompt Count</p><p class="v">534</p><p class="s">Decision-intent prompts</p></article>
+        <article class="stat"><p class="l">AI Responses</p><p class="v">2136</p><p class="s">Sampled answer set</p></article>
+        <article class="stat"><p class="l">Platforms</p><p class="v">4</p><p class="s">Perplexity, ChatGPT, Gemini...</p></article>
+        <article class="stat"><p class="l">Languages</p><p class="v">1</p><p class="s">English</p></article>
+      </div>
+
+      <div class="row mid">
+        <article class="metric">
+          <span class="tag good">Baseline Strength</span>
+          <h3 class="mn">Visibility</h3>
+          <p class="mv2">29.6%</p>
+          <p class="sub">Comp Avg 43.4% | Rank #3</p>
+          <div class="bar-r"><span class="lab">You</span><div class="track"><div class="fill-you" style="width:68%"></div></div><span class="num">29.6%</span></div>
+          <div class="bar-r"><span class="lab">Comp</span><div class="track"><div class="fill-comp" style="width:100%"></div></div><span class="num">43.4%</span></div>
+        </article>
+    
+
+        <article class="metric">
+          <span class="tag good">Demand Share</span>
+          <h3 class="mn">Share of Voice</h3>
+          <p class="mv2">28.8%</p>
+          <p class="sub">Comp Avg 29.6% | Rank #3</p>
+          <div class="bar-r"><span class="lab">You</span><div class="track"><div class="fill-you" style="width:97%"></div></div><span class="num">28.8%</span></div>
+          <div class="bar-r"><span class="lab">Comp</span><div class="track"><div class="fill-comp" style="width:100%"></div></div><span class="num">29.6%</span></div>
+        </article>
+    
+
+        <article class="metric">
+          <span class="tag bad">Authority Gap</span>
+          <h3 class="mn">Citation Rate</h3>
+          <p class="mv2">2.0%</p>
+          <p class="sub">Comp Avg 2.2% | Rank #3</p>
+          <div class="bar-r"><span class="lab">You</span><div class="track"><div class="fill-you" style="width:89%"></div></div><span class="num">2.0%</span></div>
+          <div class="bar-r"><span class="lab">Comp</span><div class="track"><div class="fill-comp" style="width:100%"></div></div><span class="num">2.2%</span></div>
+        </article>
+    
+
+        <article class="metric">
+          <span class="tag good">Conversion Tone</span>
+          <h3 class="mn">Sentiment Score</h3>
+          <p class="mv2">73.7</p>
+          <p class="sub">Comp Avg 93.2 | Rank #4</p>
+          <div class="bar-r"><span class="lab">You</span><div class="track"><div class="fill-you" style="width:79%"></div></div><span class="num">73.7</span></div>
+          <div class="bar-r"><span class="lab">Comp</span><div class="track"><div class="fill-comp" style="width:100%"></div></div><span class="num">93.2</span></div>
+        </article>
+    </div>
+
+      <div class="row bottom">
+        <section class="panel">
+          <h4 class="ph"><span class="pt">Platform Compare</span><span class="hint">visibility / SOV / avg rank / citation / sentiment</span></h4>
+          <table>
+            <thead><tr><th>Platform</th><th>Vis</th><th>SOV</th><th>Avg Rk</th><th>Cit</th><th>Sent</th></tr></thead>
+            <tbody><tr><td>Grok</td><td>40.9%</td><td>34.5%</td><td>1.36</td><td>2.2%</td><td>94.0</td></tr>
+<tr><td>Google Gemini</td><td>40.9%</td><td>34.5%</td><td>1.36</td><td>4.0%</td><td>97.7</td></tr></tbody>
+          </table>
+
+          <h4 class="ph" style="margin-top:2px;"><span class="pt">Top Conversation Topics</span><span class="hint">from query expansion set</span></h4>
+          <div class="chips"><span class="chip">Japan Outbound Travel</span>
+<span class="chip">Korea Outbound Travel</span>
+<span class="chip">Greater China &amp; Middle East Travel</span>
+<span class="chip">Southeast Asia Travel Solutions</span>
+<span class="chip">Mobile Travel Tools</span></div>
+
+          <h4 class="ph" style="margin-top:1px;"><span class="pt">High-Value Prompts</span><span class="hint">query fanout samples</span></h4>
+          <ul class="list"><li class="li">app for booking China flights and hotels</li>
+<li class="li">best app to book flights to China</li>
+<li class="li">app to book China flights and hotels</li></ul>
+
+          <h4 class="ph" style="margin-top:2px;"><span class="pt">Existing Strengths</span><span class="hint">quick wins to build on</span></h4>
+          <ul class="list"><li class="li good">Broad response coverage across 4 mainstream AI platforms.</li>
+<li class="li good">Baseline visibility is 29.6% with strong query-level presence.</li>
+<li class="li good">Sentiment stays competitive at 73.7 in sampled prompts.</li></ul>
+
+          <h4 class="ph" style="margin-top:2px;"><span class="pt">Missing Trust Assets</span><span class="hint">key pages not found</span></h4>
+          <ul class="list"><li class="li bad">Citation authority still trails top competitors in high-intent answers.</li>
+<li class="li bad">Need stronger citable comparison / FAQ style answer blocks.</li></ul>
+        </section>
+
+        <section class="panel">
+          <h4 class="ph"><span class="pt">Sentiment Structure</span><span class="hint">Positive / Neutral / Negative</span></h4>
+          <div class="sent-structure">
+            <div class="sent-row"><span class="sl">Positive</span><div class="sb"><div class="sf pos" style="width:100%"></div></div><span class="sv">100%</span></div>
+            <div class="sent-row"><span class="sl">Neutral</span><div class="sb"><div class="sf neu" style="width:0%"></div></div><span class="sv">0%</span></div>
+            <div class="sent-row"><span class="sl">Negative</span><div class="sb"><div class="sf neg" style="width:0%"></div></div><span class="sv">0%</span></div>
+          </div>
+
+          <h4 class="ph" style="margin-top:2px;"><span class="pt">Sentiment Score Dashboard (0-100)</span><span class="hint">overall score</span></h4>
+          <div class="score-box"><span class="k">Current Score</span><p class="v">73.7</p></div>
+
+          <h4 class="ph" style="margin-top:2px;"><span class="pt">Top Citing Domains ⭐</span><span class="hint">domain / visits / type / count / rate</span></h4>
+          <table class="domains-table">
+            <thead><tr><th>Domain</th><th>Monthly Visits</th><th>Domain Type</th><th>Count</th><th>Citation Rate</th></tr></thead>
+            <tbody><tr><td>apps.apple.com</td><td>127.29M</td><td>Corporate</td><td>37477</td><td>32.3%</td></tr>
+<tr><td>reddit.com</td><td>3.83B</td><td>UGC</td><td>34617</td><td>29.9%</td></tr>
+<tr><td>play.google.com</td><td>1.05B</td><td>Corporate</td><td>34586</td><td>29.8%</td></tr>
+<tr><td>youtube.com</td><td>27.02B</td><td>Media</td><td>15527</td><td>13.4%</td></tr>
+<tr><td>traveloka.com</td><td>28.90M</td><td>Corporate</td><td>13983</td><td>12.1%</td></tr>
+<tr><td>facebook.com</td><td>10.81B</td><td>UGC</td><td>11503</td><td>9.9%</td></tr>
+<tr><td>pcmag.com</td><td>11.81M</td><td>Corporate</td><td>10429</td><td>9.0%</td></tr>
+<tr><td>going.com</td><td>1.44M</td><td>Corporate</td><td>8967</td><td>7.7%</td></tr>
+<tr><td>en.wikipedia.org</td><td>848.36M</td><td>Reference</td><td>8410</td><td>7.3%</td></tr>
+<tr><td>activetraveladventures.com</td><td>15.74K</td><td>Corporate</td><td>8137</td><td>7.0%</td></tr></tbody>
+          </table>
+        </section>
+      </div>
+
+      <div class="footer">
+        <div class="footer-metrics">
+          <div class="fm-card"><p class="k">Avg Rank Gap</p><p class="v">+1.38 positions vs competitor average</p></div>
+          <div class="fm-card"><p class="k">Citation Gap</p><p class="v">1.98% (Comp 2.22%)</p></div>
+        </div>
+
+        <div class="competitor-wrap">
+          <p class="comp-title">Key Competitors</p>
+          <div class="competitor-logos"><span class="logo-pill"><img src="https://api.dageno.ai/business/api/v1/brand/favicons?domain=booking.com" alt="Booking logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';"><span class="logo-fb">B</span><span class="n">Booking</span></span>
+<span class="logo-pill"><img src="https://api.dageno.ai/business/api/v1/brand/favicons?domain=expedia.com" alt="Expedia logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';"><span class="logo-fb">E</span><span class="n">Expedia</span></span>
+<span class="logo-pill"><img src="https://api.dageno.ai/business/api/v1/brand/favicons?domain=agoda.com" alt="Agoda logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';"><span class="logo-fb">A</span><span class="n">Agoda</span></span>
+<span class="logo-pill"><img src="https://api.dageno.ai/business/api/v1/brand/favicons?domain=klook.com" alt="Klook logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';"><span class="logo-fb">K</span><span class="n">Klook</span></span>
+<span class="logo-pill"><img src="https://api.dageno.ai/business/api/v1/brand/favicons?domain=airbnb.com" alt="Airbnb logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';"><span class="logo-fb">A</span><span class="n">Airbnb</span></span></div>
+        </div>
+
+        <div class="f-right">
+          <p class="a">Brand AI Performance Check</p>
+          <p class="b">By Dageno AI</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

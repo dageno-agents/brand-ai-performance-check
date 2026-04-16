@@ -1,0 +1,196 @@
+{
+  "brand": {
+    "name": "Trip",
+    "domain": "trip.com",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Trip.com_logo.svg/1280px-Trip.com_logo.svg.png",
+    "generated_at": "2026-04-16",
+    "date_range": "2026-03-01 - 2026-04-15"
+  },
+  "headline": {
+    "core_diagnosis": "Trip is visible in AI discussions (29.6% visibility), but citation density (2.0%) and AI mention stability (28.8%) still need reinforcement.",
+    "key_insight": "Visibility and SOV are improving, but technical citability is fragile. Without stronger crawl/readability trust signals, high-intent recommendations can still leak to competitors."
+  },
+  "kpis": {
+    "avg_rank_lead": "+2.64 positions",
+    "seo_bounce": "73.8%",
+    "overall_rank_snapshot": "#1 in key GEO visibility signals",
+    "avg_position": "1.36",
+    "sentiment": "82.0",
+    "monthly_visits": "N/A"
+  },
+  "competitors": [
+    {
+      "name": "Booking",
+      "domain": "booking.com",
+      "logo_url": "https://api.dageno.ai/business/api/v1/brand/favicons?domain=booking.com"
+    },
+    {
+      "name": "Expedia",
+      "domain": "expedia.com",
+      "logo_url": "https://api.dageno.ai/business/api/v1/brand/favicons?domain=expedia.com"
+    },
+    {
+      "name": "Agoda",
+      "domain": "agoda.com",
+      "logo_url": "https://api.dageno.ai/business/api/v1/brand/favicons?domain=agoda.com"
+    },
+    {
+      "name": "Klook",
+      "domain": "klook.com",
+      "logo_url": "https://api.dageno.ai/business/api/v1/brand/favicons?domain=klook.com"
+    },
+    {
+      "name": "Airbnb",
+      "domain": "airbnb.com",
+      "logo_url": "https://api.dageno.ai/business/api/v1/brand/favicons?domain=airbnb.com"
+    }
+  ],
+  "competitor_summary": "Booking, Expedia, Agoda, Klook, Airbnb",
+  "platform_compare": [
+    {
+      "platform": "Grok",
+      "visibility": "40.9%",
+      "sov": "34.5%",
+      "avg_rank": "1.36",
+      "citation": "2.2%",
+      "sentiment": "94.0"
+    },
+    {
+      "platform": "Google Gemini",
+      "visibility": "40.9%",
+      "sov": "34.5%",
+      "avg_rank": "1.36",
+      "citation": "4.0%",
+      "sentiment": "97.7"
+    },
+    {
+      "platform": "Chatgpt",
+      "visibility": "19.9%",
+      "sov": "16.8%",
+      "avg_rank": "1.36",
+      "citation": "0.5%",
+      "sentiment": "94.5"
+    },
+    {
+      "platform": "Perplexity",
+      "visibility": "16.8%",
+      "sov": "14.2%",
+      "avg_rank": "1.36",
+      "citation": "2.2%",
+      "sentiment": "86.6"
+    }
+  ],
+  "topics": [
+    "Japan Outbound Travel",
+    "Korea Outbound Travel",
+    "Greater China & Middle East Travel",
+    "Southeast Asia Travel Solutions",
+    "Mobile Travel Tools"
+  ],
+  "high_value_prompts": [
+    "app for booking China flights and hotels",
+    "best app to book flights to China",
+    "app to book China flights and hotels"
+  ],
+  "existing_strengths": [
+    "Brand visibility is 29.6% in sampled period.",
+    "AI mention rate is 28.8% with stable multi-platform coverage.",
+    "Top competitor set identified: Booking, Expedia, Agoda."
+  ],
+  "missing_trust_assets": [
+    "Structured schema coverage and crawl robustness need reinforcement.",
+    "Citation footprint is lower than visibility performance.",
+    "Build more linkable pages for high-intent query clusters."
+  ],
+  "sentiment": {
+    "positive": 100,
+    "neutral": 0,
+    "negative": 0,
+    "score": "82.0",
+    "positive_keywords": [
+      "Japan Outbound Travel",
+      "Korea Outbound Travel",
+      "Greater China & Middle East Travel",
+      "Southeast Asia Travel Solutions",
+      "Mobile Travel Tools"
+    ],
+    "negative_keywords": [
+      "Citation depth gaps",
+      "Technical trust signals",
+      "High-intent query leakage",
+      "Source authority spread"
+    ]
+  },
+  "top_citing_domains": [
+    {
+      "domain": "apps.apple.com",
+      "monthly_visits": "127.29M",
+      "domain_type": "Corporate",
+      "count": 37477,
+      "citation_rate": "32.3%"
+    },
+    {
+      "domain": "reddit.com",
+      "monthly_visits": "3.83B",
+      "domain_type": "UGC",
+      "count": 34617,
+      "citation_rate": "29.9%"
+    },
+    {
+      "domain": "play.google.com",
+      "monthly_visits": "1.05B",
+      "domain_type": "Corporate",
+      "count": 34586,
+      "citation_rate": "29.8%"
+    },
+    {
+      "domain": "youtube.com",
+      "monthly_visits": "27.02B",
+      "domain_type": "Media",
+      "count": 15527,
+      "citation_rate": "13.4%"
+    },
+    {
+      "domain": "traveloka.com",
+      "monthly_visits": "28.90M",
+      "domain_type": "Corporate",
+      "count": 13983,
+      "citation_rate": "12.1%"
+    },
+    {
+      "domain": "facebook.com",
+      "monthly_visits": "10.81B",
+      "domain_type": "UGC",
+      "count": 11503,
+      "citation_rate": "9.9%"
+    },
+    {
+      "domain": "pcmag.com",
+      "monthly_visits": "11.81M",
+      "domain_type": "Corporate",
+      "count": 10429,
+      "citation_rate": "9.0%"
+    },
+    {
+      "domain": "going.com",
+      "monthly_visits": "1.44M",
+      "domain_type": "Corporate",
+      "count": 8967,
+      "citation_rate": "7.7%"
+    },
+    {
+      "domain": "en.wikipedia.org",
+      "monthly_visits": "848.36M",
+      "domain_type": "Reference",
+      "count": 8410,
+      "citation_rate": "7.3%"
+    },
+    {
+      "domain": "activetraveladventures.com",
+      "monthly_visits": "15.74K",
+      "domain_type": "Corporate",
+      "count": 8137,
+      "citation_rate": "7.0%"
+    }
+  ]
+}

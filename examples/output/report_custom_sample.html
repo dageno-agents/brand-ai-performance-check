@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sample Brand - Brand AI Performance Check</title>
+  <style>
+    :root {
+      --brand: #ef6a3d;
+      --brand-dark: #ce4f27;
+      --bg: #f4f6fb;
+      --ink: #172033;
+      --muted: #5a6b86;
+      --line: #dbe3ef;
+      --card: #ffffff;
+      --side: #0f1b2e;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: linear-gradient(180deg,#eef2f9 0%,#f7f9fd 100%); font-family: "Inter","Segoe UI",sans-serif; color: var(--ink); padding: 24px; }
+    .canvas { width: 1400px; margin: 0 auto; border-radius: 24px; overflow: hidden; background: var(--card); box-shadow: 0 24px 64px rgba(17, 29, 53, .18); display: grid; grid-template-columns: 420px 1fr; min-height: 900px; }
+
+    .left { background: linear-gradient(180deg, #0f1b2e 0%, #1b2d46 100%); color: #eaf1ff; padding: 26px 26px 22px; display: flex; flex-direction: column; gap: 14px; }
+    .brand-head { display: flex; align-items: center; gap: 14px; }
+    .brand-head img { width: 50px; height: 50px; border-radius: 14px; background:#fff; padding:4px; object-fit: contain; }
+    .brand-name { font-size: 29px; font-weight: 800; line-height: 1.05; }
+    .brand-sub { font-size: 11px; text-transform: uppercase; letter-spacing: .11em; color: #fca789; font-weight: 800; margin-top: 2px; }
+    .meta { border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.06); border-radius: 14px; padding: 12px; display: grid; gap: 6px; }
+    .meta-row { display:flex; justify-content: space-between; gap:12px; font-size:12px; }
+    .meta-row span:first-child { color: #9eb2cf; font-weight: 700; }
+    .meta-row span:last-child { color: #f6f8ff; font-weight: 700; text-align: right; }
+    .block-title { font-size: 12px; letter-spacing: .09em; font-weight: 800; color: #f4b39a; text-transform: uppercase; }
+    .diagnosis { background: linear-gradient(160deg, rgba(239,106,61,.96), rgba(232,130,88,.96)); border-radius: 14px; padding: 12px; font-size: 12.5px; line-height: 1.55; font-weight: 700; color: #fff6f2; }
+    .insight { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.13); border-radius: 14px; padding: 12px; font-size: 12.5px; line-height: 1.55; color: #e5edfc; }
+
+    .left-grid { display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    .left-kpi { background: rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.13); border-radius: 12px; padding: 9px 10px; }
+    .left-kpi .k { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color:#9db0cb; font-weight: 700; }
+    .left-kpi .v { font-size: 18px; font-weight: 800; color: #fff; margin-top: 3px; line-height: 1.2; }
+
+    .comp-wrap { margin-top: 4px; }
+    .comp-summary { font-size: 12px; color:#c8d5ec; line-height:1.5; margin-bottom:8px; }
+    .comp-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .comp-item { display:flex; gap:8px; align-items:center; padding:8px; border:1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.05); border-radius: 10px; }
+    .comp-item img { width: 22px; height:22px; border-radius:6px; background:#fff; object-fit: contain; }
+    .comp-name { font-size: 11px; font-weight: 700; color:#f6f8ff; line-height: 1.2; }
+    .comp-domain { font-size: 10px; color:#9eb2cf; line-height: 1.2; }
+
+    .left-foot { margin-top: auto; border-top: 1px solid rgba(255,255,255,.12); padding-top: 10px; display:flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .left-foot b { font-size: 15px; color:#fff; }
+    .left-foot span { color:#91a4c2; font-size:10px; text-transform: uppercase; letter-spacing: .09em; font-weight: 700; }
+
+    .right { padding: 18px 18px 16px; background: #f8fbff; display:grid; grid-template-columns: 1fr 1fr; gap: 12px; align-content: start; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px; }
+    .card h3 { margin: 0 0 4px; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: #1d304e; }
+    .sub { margin: 0 0 8px; font-size: 10px; color: #7f90a9; text-transform: uppercase; letter-spacing: .07em; font-weight: 700; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; font-size: 11px; padding: 5px 4px; border-bottom: 1px solid #edf2f8; }
+    th { color: #637791; font-size: 10px; text-transform: uppercase; letter-spacing: .06em; }
+    td { color: #1c304c; font-weight: 600; }
+
+    .two-col { display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    ul { margin: 0; padding-left: 16px; }
+    li { font-size: 11px; color: #2b3f5f; line-height: 1.45; margin-bottom: 4px; font-weight: 550; }
+
+    .sent-grid { display:grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 8px; }
+    .sent-box { border:1px solid #e9eef7; border-radius: 10px; padding: 8px; text-align: center; }
+    .sent-box .n { font-size: 10px; color:#71839e; text-transform: uppercase; font-weight: 700; }
+    .sent-box .v { font-size: 20px; font-weight: 800; color: #193355; margin-top: 2px; }
+    .score { margin-top: 4px; border:1px solid #e9eef7; border-radius: 10px; padding: 8px; display:flex; justify-content: space-between; align-items: center; }
+    .score .label { font-size: 10px; text-transform: uppercase; color:#72839f; font-weight: 700; }
+    .score .value { font-size: 24px; color: var(--brand-dark); font-weight: 800; line-height:1; }
+
+    .span2 { grid-column: span 2; }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+    <aside class="left">
+      <div class="brand-head">
+        <img src="https://api.dageno.ai/business/api/v1/brand/favicons?domain=sample.com" alt="Sample Brand logo" />
+        <div>
+          <div class="brand-name">Sample Brand</div>
+          <div class="brand-sub">Brand AI Performance Check</div>
+        </div>
+      </div>
+
+      <div class="meta">
+        <div class="meta-row"><span>Domain</span><span>sample.com</span></div>
+        <div class="meta-row"><span>Generated Date</span><span>2026-04-16</span></div>
+        <div class="meta-row"><span>Date Range</span><span>2026-03-01 - 2026-04-15</span></div>
+      </div>
+
+      <div class="block-title">Core Diagnosis</div>
+      <div class="diagnosis">Sample brand shows good visibility but still lacks strong citation depth.</div>
+
+      <div class="block-title">Key Insight</div>
+      <div class="insight">Traffic and sentiment are stable, but technical trust signals should be improved to reduce recommendation leakage.</div>
+
+      <div class="left-grid">
+        <div class="left-kpi"><div class="k">Avg Rank Lead</div><div class="v">+1.21 positions</div></div>
+        <div class="left-kpi"><div class="k">SEO Bounce</div><div class="v">43.6%</div></div>
+        <div class="left-kpi"><div class="k">Avg Position</div><div class="v">2.15</div></div>
+        <div class="left-kpi"><div class="k">Monthly Visits</div><div class="v">2.74M</div></div>
+      </div>
+
+      <div class="comp-wrap">
+        <div class="block-title">Key Competitors</div>
+        <div class="comp-summary">Competitor A, Competitor B</div>
+        <div class="comp-grid">
+        <div class="comp-item">
+          <img src="https://api.dageno.ai/business/api/v1/brand/favicons?domain=comp-a.com" alt="Competitor A logo" loading="lazy" />
+          <div>
+            <div class="comp-name">Competitor A</div>
+            <div class="comp-domain">comp-a.com</div>
+          </div>
+        </div>
+        
+        <div class="comp-item">
+          <img src="https://api.dageno.ai/business/api/v1/brand/favicons?domain=comp-b.com" alt="Competitor B logo" loading="lazy" />
+          <div>
+            <div class="comp-name">Competitor B</div>
+            <div class="comp-domain">comp-b.com</div>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <div class="left-foot"><b>By Dageno AI</b><span>#1 in 4/6 metrics</span></div>
+    </aside>
+
+    <main class="right">
+      <section class="card">
+        <h3>Platform Compare</h3>
+        <p class="sub">visibility / SOV / avg rank / citation / sentiment</p>
+        <table>
+          <thead><tr><th>Platform</th><th>Vis</th><th>SOV</th><th>Avg Rk</th><th>Cit</th><th>Sent</th></tr></thead>
+          <tbody>
+        <tr>
+          <td>ChatGPT</td>
+          <td>30.0%</td>
+          <td>54.0%</td>
+          <td>2.08</td>
+          <td>0.0%</td>
+          <td>91.7</td>
+        </tr>
+        </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <h3>Sentiment Structure</h3>
+        <p class="sub">Positive / Neutral / Negative</p>
+        <div class="sent-grid">
+          <div class="sent-box"><div class="n">Positive</div><div class="v">90%</div></div>
+          <div class="sent-box"><div class="n">Neutral</div><div class="v">10%</div></div>
+          <div class="sent-box"><div class="n">Negative</div><div class="v">0%</div></div>
+        </div>
+        <div class="score"><div class="label">Sentiment Score Dashboard (0-100)</div><div class="value">76.3</div></div>
+      </section>
+
+      <section class="card">
+        <h3>Top Conversation Topics</h3>
+        <p class="sub">from query expansion set</p>
+        <ul><li>New Tech Product Discovery</li><li>Startup Launch Strategies</li></ul>
+        <h3 style="margin-top:10px;">High-Value Prompts</h3>
+        <p class="sub">query fanout samples</p>
+        <ul><li>Compare top websites for finding new software and apps?</li><li>Best AI tools for automating developer workflows in 2026?</li></ul>
+      </section>
+
+      <section class="card">
+        <div class="two-col">
+          <div>
+            <h3>Existing Strengths</h3>
+            <p class="sub">quick wins to build on</p>
+            <ul><li>Page title exists and mobile viewport is declared.</li><li>Strong exposure lead across visibility and SOV metrics.</li></ul>
+          </div>
+          <div>
+            <h3>Missing Trust Assets</h3>
+            <p class="sub">key pages / signals to improve</p>
+            <ul><li>No JSON-LD / structured schema detected.</li><li>robots.txt / sitemap / llms.txt not available.</li></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="two-col">
+          <div>
+            <h3>Positive Keywords</h3>
+            <p class="sub">high-trust signals</p>
+            <ul><li>New product discovery</li><li>Startup launch platform</li></ul>
+          </div>
+          <div>
+            <h3>Negative Keywords</h3>
+            <p class="sub">conversion friction</p>
+            <ul><li>AI tool visibility</li><li>Developer tool reach</li></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card span2">
+        <h3>Top Citing Domains ⭐</h3>
+        <p class="sub">domain / visits / type / count / rate</p>
+        <table>
+          <thead><tr><th>Domain</th><th>Monthly Visits</th><th>Domain Type</th><th>Count</th><th>Citation Rate</th></tr></thead>
+          <tbody>
+        <tr>
+          <td>reddit.com</td>
+          <td>3.83B</td>
+          <td>UGC</td>
+          <td>39</td>
+          <td>48.8%</td>
+        </tr>
+        </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

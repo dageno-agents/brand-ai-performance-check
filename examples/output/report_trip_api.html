@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trip - Brand AI Performance Check</title>
+  <style>
+    :root {
+      --brand: #ef6a3d;
+      --brand-dark: #ce4f27;
+      --bg: #f4f6fb;
+      --ink: #172033;
+      --muted: #5a6b86;
+      --line: #dbe3ef;
+      --card: #ffffff;
+      --side: #0f1b2e;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: linear-gradient(180deg,#eef2f9 0%,#f7f9fd 100%); font-family: "Inter","Segoe UI",sans-serif; color: var(--ink); padding: 24px; }
+    .canvas { width: 1400px; margin: 0 auto; border-radius: 24px; overflow: hidden; background: var(--card); box-shadow: 0 24px 64px rgba(17, 29, 53, .18); display: grid; grid-template-columns: 420px 1fr; min-height: 900px; }
+
+    .left { background: linear-gradient(180deg, #0f1b2e 0%, #1b2d46 100%); color: #eaf1ff; padding: 26px 26px 22px; display: flex; flex-direction: column; gap: 14px; }
+    .brand-head { display: flex; align-items: center; gap: 14px; }
+    .brand-head img { width: 50px; height: 50px; border-radius: 14px; background:#fff; padding:4px; object-fit: contain; }
+    .brand-name { font-size: 29px; font-weight: 800; line-height: 1.05; }
+    .brand-sub { font-size: 11px; text-transform: uppercase; letter-spacing: .11em; color: #fca789; font-weight: 800; margin-top: 2px; }
+    .meta { border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.06); border-radius: 14px; padding: 12px; display: grid; gap: 6px; }
+    .meta-row { display:flex; justify-content: space-between; gap:12px; font-size:12px; }
+    .meta-row span:first-child { color: #9eb2cf; font-weight: 700; }
+    .meta-row span:last-child { color: #f6f8ff; font-weight: 700; text-align: right; }
+    .block-title { font-size: 12px; letter-spacing: .09em; font-weight: 800; color: #f4b39a; text-transform: uppercase; }
+    .diagnosis { background: linear-gradient(160deg, rgba(239,106,61,.96), rgba(232,130,88,.96)); border-radius: 14px; padding: 12px; font-size: 12.5px; line-height: 1.55; font-weight: 700; color: #fff6f2; }
+    .insight { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.13); border-radius: 14px; padding: 12px; font-size: 12.5px; line-height: 1.55; color: #e5edfc; }
+
+    .left-grid { display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    .left-kpi { background: rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.13); border-radius: 12px; padding: 9px 10px; }
+    .left-kpi .k { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color:#9db0cb; font-weight: 700; }
+    .left-kpi .v { font-size: 18px; font-weight: 800; color: #fff; margin-top: 3px; line-height: 1.2; }
+
+    .comp-wrap { margin-top: 4px; }
+    .comp-summary { font-size: 12px; color:#c8d5ec; line-height:1.5; margin-bottom:8px; }
+    .comp-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .comp-item { display:flex; gap:8px; align-items:center; padding:8px; border:1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.05); border-radius: 10px; }
+    .comp-item img { width: 22px; height:22px; border-radius:6px; background:#fff; object-fit: contain; }
+    .comp-name { font-size: 11px; font-weight: 700; color:#f6f8ff; line-height: 1.2; }
+    .comp-domain { font-size: 10px; color:#9eb2cf; line-height: 1.2; }
+
+    .left-foot { margin-top: auto; border-top: 1px solid rgba(255,255,255,.12); padding-top: 10px; display:flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .left-foot b { font-size: 15px; color:#fff; }
+    .left-foot span { color:#91a4c2; font-size:10px; text-transform: uppercase; letter-spacing: .09em; font-weight: 700; }
+
+    .right { padding: 18px 18px 16px; background: #f8fbff; display:grid; grid-template-columns: 1fr 1fr; gap: 12px; align-content: start; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px; }
+    .card h3 { margin: 0 0 4px; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: #1d304e; }
+    .sub { margin: 0 0 8px; font-size: 10px; color: #7f90a9; text-transform: uppercase; letter-spacing: .07em; font-weight: 700; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; font-size: 11px; padding: 5px 4px; border-bottom: 1px solid #edf2f8; }
+    th { color: #637791; font-size: 10px; text-transform: uppercase; letter-spacing: .06em; }
+    td { color: #1c304c; font-weight: 600; }
+
+    .two-col { display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    ul { margin: 0; padding-left: 16px; }
+    li { font-size: 11px; color: #2b3f5f; line-height: 1.45; margin-bottom: 4px; font-weight: 550; }
+
+    .sent-grid { display:grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 8px; }
+    .sent-box { border:1px solid #e9eef7; border-radius: 10px; padding: 8px; text-align: center; }
+    .sent-box .n { font-size: 10px; color:#71839e; text-transform: uppercase; font-weight: 700; }
+    .sent-box .v { font-size: 20px; font-weight: 800; color: #193355; margin-top: 2px; }
+    .score { margin-top: 4px; border:1px solid #e9eef7; border-radius: 10px; padding: 8px; display:flex; justify-content: space-between; align-items: center; }
+    .score .label { font-size: 10px; text-transform: uppercase; color:#72839f; font-weight: 700; }
+    .score .value { font-size: 24px; color: var(--brand-dark); font-weight: 800; line-height:1; }
+
+    .span2 { grid-column: span 2; }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+    <aside class="left">
+      <div class="brand-head">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Trip.com_logo.svg/1280px-Trip.com_logo.svg.png" alt="Trip logo" />
+        <div>
+          <div class="brand-name">Trip</div>
+          <div class="brand-sub">Brand AI Performance Check</div>
+        </div>
+      </div>
+
+      <div class="meta">
+        <div class="meta-row"><span>Domain</span><span>trip.com</span></div>
+        <div class="meta-row"><span>Generated Date</span><span>2026-04-16</span></div>
+        <div class="meta-row"><span>Date Range</span><span>2026-03-01 - 2026-04-15</span></div>
+      </div>
+
+      <div class="block-title">Core Diagnosis</div>
+      <div class="diagnosis">Trip is visible in AI discussions (29.6% visibility), but citation density (2.0%) and AI mention stability (28.8%) still need reinforcement.</div>
+
+      <div class="block-title">Key Insight</div>
+      <div class="insight">Visibility and SOV are improving, but technical citability is fragile. Without stronger crawl/readability trust signals, high-intent recommendations can still leak to competitors.</div>
+
+      <div class="left-grid">
+        <div class="left-kpi"><div class="k">Avg Rank Lead</div><div class="v">+2.64 positions</div></div>
+        <div class="left-kpi"><div class="k">SEO Bounce</div><div class="v">73.8%</div></div>
+        <div class="left-kpi"><div class="k">Avg Position</div><div class="v">1.36</div></div>
+        <div class="left-kpi"><div class="k">Monthly Visits</div><div class="v">N/A</div></div>
+      </div>
+
+      <div class="comp-wrap">
+        <div class="block-title">Key Competitors</div>
+        <div class="comp-summary">Booking, Expedia, Agoda, Klook, Airbnb</div>
+        <div class="comp-grid">
+        <div class="comp-item">
+          <img src="https://api.dageno.ai/business/api/v1/brand/favicons?domain=booking.com" alt="Booking logo" loading="lazy" />
+          <div>
+            <div class="comp-name">Booking</div>
+            <div class="comp-domain">booking.com</div>
+          </div>
+        </div>
+        
+        <div class="comp-item">
+          <img src="https://api.dageno.ai/business/api/v1/brand/favicons?domain=expedia.com" alt="Expedia logo" loading="lazy" />
+          <div>
+            <div class="comp-name">Expedia</div>
+            <div class="comp-domain">expedia.com</div>
+          </div>
+        </div>
+        
+        <div class="comp-item">
+          <img src="https://api.dageno.ai/business/api/v1/brand/favicons?domain=agoda.com" alt="Agoda logo" loading="lazy" />
+          <div>
+            <div class="comp-name">Agoda</div>
+            <div class="comp-domain">agoda.com</div>
+          </div>
+        </div>
+        
+        <div class="comp-item">
+          <img src="https://api.dageno.ai/business/api/v1/brand/favicons?domain=klook.com" alt="Klook logo" loading="lazy" />
+          <div>
+            <div class="comp-name">Klook</div>
+            <div class="comp-domain">klook.com</div>
+          </div>
+        </div>
+        
+        <div class="comp-item">
+          <img src="https://api.dageno.ai/business/api/v1/brand/favicons?domain=airbnb.com" alt="Airbnb logo" loading="lazy" />
+          <div>
+            <div class="comp-name">Airbnb</div>
+            <div class="comp-domain">airbnb.com</div>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <div class="left-foot"><b>By Dageno AI</b><span>#1 in key GEO visibility signals</span></div>
+    </aside>
+
+    <main class="right">
+      <section class="card">
+        <h3>Platform Compare</h3>
+        <p class="sub">visibility / SOV / avg rank / citation / sentiment</p>
+        <table>
+          <thead><tr><th>Platform</th><th>Vis</th><th>SOV</th><th>Avg Rk</th><th>Cit</th><th>Sent</th></tr></thead>
+          <tbody>
+        <tr>
+          <td>Grok</td>
+          <td>40.9%</td>
+          <td>34.5%</td>
+          <td>1.36</td>
+          <td>2.2%</td>
+          <td>94.0</td>
+        </tr>
+        
+        <tr>
+          <td>Google Gemini</td>
+          <td>40.9%</td>
+          <td>34.5%</td>
+          <td>1.36</td>
+          <td>4.0%</td>
+          <td>97.7</td>
+        </tr>
+        
+        <tr>
+          <td>Chatgpt</td>
+          <td>19.9%</td>
+          <td>16.8%</td>
+          <td>1.36</td>
+          <td>0.5%</td>
+          <td>94.5</td>
+        </tr>
+        
+        <tr>
+          <td>Perplexity</td>
+          <td>16.8%</td>
+          <td>14.2%</td>
+          <td>1.36</td>
+          <td>2.2%</td>
+          <td>86.6</td>
+        </tr>
+        </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <h3>Sentiment Structure</h3>
+        <p class="sub">Positive / Neutral / Negative</p>
+        <div class="sent-grid">
+          <div class="sent-box"><div class="n">Positive</div><div class="v">100%</div></div>
+          <div class="sent-box"><div class="n">Neutral</div><div class="v">0%</div></div>
+          <div class="sent-box"><div class="n">Negative</div><div class="v">0%</div></div>
+        </div>
+        <div class="score"><div class="label">Sentiment Score Dashboard (0-100)</div><div class="value">82.0</div></div>
+      </section>
+
+      <section class="card">
+        <h3>Top Conversation Topics</h3>
+        <p class="sub">from query expansion set</p>
+        <ul><li>Japan Outbound Travel</li><li>Korea Outbound Travel</li><li>Greater China &amp; Middle East Travel</li><li>Southeast Asia Travel Solutions</li><li>Mobile Travel Tools</li></ul>
+        <h3 style="margin-top:10px;">High-Value Prompts</h3>
+        <p class="sub">query fanout samples</p>
+        <ul><li>app for booking China flights and hotels</li><li>best app to book flights to China</li><li>app to book China flights and hotels</li></ul>
+      </section>
+
+      <section class="card">
+        <div class="two-col">
+          <div>
+            <h3>Existing Strengths</h3>
+            <p class="sub">quick wins to build on</p>
+            <ul><li>Brand visibility is 29.6% in sampled period.</li><li>AI mention rate is 28.8% with stable multi-platform coverage.</li><li>Top competitor set identified: Booking, Expedia, Agoda.</li></ul>
+          </div>
+          <div>
+            <h3>Missing Trust Assets</h3>
+            <p class="sub">key pages / signals to improve</p>
+            <ul><li>Structured schema coverage and crawl robustness need reinforcement.</li><li>Citation footprint is lower than visibility performance.</li><li>Build more linkable pages for high-intent query clusters.</li></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="two-col">
+          <div>
+            <h3>Positive Keywords</h3>
+            <p class="sub">high-trust signals</p>
+            <ul><li>Japan Outbound Travel</li><li>Korea Outbound Travel</li><li>Greater China &amp; Middle East Travel</li><li>Southeast Asia Travel Solutions</li><li>Mobile Travel Tools</li></ul>
+          </div>
+          <div>
+            <h3>Negative Keywords</h3>
+            <p class="sub">conversion friction</p>
+            <ul><li>Citation depth gaps</li><li>Technical trust signals</li><li>High-intent query leakage</li><li>Source authority spread</li></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card span2">
+        <h3>Top Citing Domains ⭐</h3>
+        <p class="sub">domain / visits / type / count / rate</p>
+        <table>
+          <thead><tr><th>Domain</th><th>Monthly Visits</th><th>Domain Type</th><th>Count</th><th>Citation Rate</th></tr></thead>
+          <tbody>
+        <tr>
+          <td>apps.apple.com</td>
+          <td>127.29M</td>
+          <td>Corporate</td>
+          <td>37477</td>
+          <td>32.3%</td>
+        </tr>
+        
+        <tr>
+          <td>reddit.com</td>
+          <td>3.83B</td>
+          <td>UGC</td>
+          <td>34617</td>
+          <td>29.9%</td>
+        </tr>
+        
+        <tr>
+          <td>play.google.com</td>
+          <td>1.05B</td>
+          <td>Corporate</td>
+          <td>34586</td>
+          <td>29.8%</td>
+        </tr>
+        
+        <tr>
+          <td>youtube.com</td>
+          <td>27.02B</td>
+          <td>Media</td>
+          <td>15527</td>
+          <td>13.4%</td>
+        </tr>
+        
+        <tr>
+          <td>traveloka.com</td>
+          <td>28.90M</td>
+          <td>Corporate</td>
+          <td>13983</td>
+          <td>12.1%</td>
+        </tr>
+        
+        <tr>
+          <td>facebook.com</td>
+          <td>10.81B</td>
+          <td>UGC</td>
+          <td>11503</td>
+          <td>9.9%</td>
+        </tr>
+        
+        <tr>
+          <td>pcmag.com</td>
+          <td>11.81M</td>
+          <td>Corporate</td>
+          <td>10429</td>
+          <td>9.0%</td>
+        </tr>
+        
+        <tr>
+          <td>going.com</td>
+          <td>1.44M</td>
+          <td>Corporate</td>
+          <td>8967</td>
+          <td>7.7%</td>
+        </tr>
+        
+        <tr>
+          <td>en.wikipedia.org</td>
+          <td>848.36M</td>
+          <td>Reference</td>
+          <td>8410</td>
+          <td>7.3%</td>
+        </tr>
+        
+        <tr>
+          <td>activetraveladventures.com</td>
+          <td>15.74K</td>
+          <td>Corporate</td>
+          <td>8137</td>
+          <td>7.0%</td>
+        </tr>
+        </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

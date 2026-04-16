@@ -1,0 +1,83 @@
+{
+  "brand": {
+    "name": "Sample Brand",
+    "domain": "sample.com",
+    "logo_url": "https://api.dageno.ai/business/api/v1/brand/favicons?domain=sample.com",
+    "generated_at": "2026-04-16",
+    "date_range": "2026-03-01 - 2026-04-15"
+  },
+  "headline": {
+    "core_diagnosis": "Sample brand shows good visibility but still lacks strong citation depth.",
+    "key_insight": "Traffic and sentiment are stable, but technical trust signals should be improved to reduce recommendation leakage."
+  },
+  "kpis": {
+    "avg_rank_lead": "+1.21 positions",
+    "seo_bounce": "43.6%",
+    "overall_rank_snapshot": "#1 in 4/6 metrics",
+    "avg_position": "2.15",
+    "sentiment": "76.3",
+    "monthly_visits": "2.74M"
+  },
+  "competitors": [
+    {
+      "name": "Competitor A",
+      "domain": "comp-a.com",
+      "logo_url": "https://api.dageno.ai/business/api/v1/brand/favicons?domain=comp-a.com"
+    },
+    {
+      "name": "Competitor B",
+      "domain": "comp-b.com",
+      "logo_url": "https://api.dageno.ai/business/api/v1/brand/favicons?domain=comp-b.com"
+    }
+  ],
+  "competitor_summary": "Competitor A, Competitor B",
+  "platform_compare": [
+    {
+      "platform": "ChatGPT",
+      "visibility": "30.0%",
+      "sov": "54.0%",
+      "avg_rank": "2.08",
+      "citation": "0.0%",
+      "sentiment": "91.7"
+    }
+  ],
+  "topics": [
+    "New Tech Product Discovery",
+    "Startup Launch Strategies"
+  ],
+  "high_value_prompts": [
+    "Compare top websites for finding new software and apps?",
+    "Best AI tools for automating developer workflows in 2026?"
+  ],
+  "existing_strengths": [
+    "Page title exists and mobile viewport is declared.",
+    "Strong exposure lead across visibility and SOV metrics."
+  ],
+  "missing_trust_assets": [
+    "No JSON-LD / structured schema detected.",
+    "robots.txt / sitemap / llms.txt not available."
+  ],
+  "sentiment": {
+    "positive": 90,
+    "neutral": 10,
+    "negative": 0,
+    "score": "76.3",
+    "positive_keywords": [
+      "New product discovery",
+      "Startup launch platform"
+    ],
+    "negative_keywords": [
+      "AI tool visibility",
+      "Developer tool reach"
+    ]
+  },
+  "top_citing_domains": [
+    {
+      "domain": "reddit.com",
+      "monthly_visits": "3.83B",
+      "domain_type": "UGC",
+      "count": 39,
+      "citation_rate": "48.8%"
+    }
+  ]
+}
