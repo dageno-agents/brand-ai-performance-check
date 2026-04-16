@@ -5,3 +5,5 @@ __pycache__/
 *.pyd
 examples/output/*.png
 examples/output/*.jpg
+
+**/.DS_Store

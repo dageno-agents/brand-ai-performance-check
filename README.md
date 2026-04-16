@@ -1,66 +1,87 @@
 # Brand AI Performance Check
 
-Generate a compact, data-dense, single-visual **English HTML** report for social sharing.
+![Brand AI Performance Check Cover](examples/showcase/cover.jpg)
 
-## What this repo provides
+Stable, data-dense, single-visual **English HTML** reporting skill for GEO brand diagnostics.
 
-- A reusable skill: `Brand AI Performance Check`
-- One generator script that supports two input modes:
-1. **Dageno Open API** (recommended)
-2. **User-provided data** via JSON file or public Google Doc link
-- A fixed dense-landscape template pipeline (stable format)
+## Why this repo
+
+- Fixed high-quality dense template (Xiaomi-locked style)
+- API-first data mapping from Dageno Open API
+- Custom data mode via JSON or public Google Doc
+- Showcase-ready assets for portfolio/demo
 
 ## Case Showcase
 
-The following examples are bundled directly in this repository.
-
-| Product | Visual (from `report-en.zip`) | HTML Sample (from `report-HTML.zip`) |
+| Product | Visual | HTML Sample |
 |---|---|---|
-| EasyLaTeX | <img src="examples/showcase/images/EasyLaTeX.jpg" alt="EasyLaTeX report" width="260"> | [EasyLaTeX.html](examples/showcase/html/EasyLaTeX.html) |
-| Hithium | <img src="examples/showcase/images/Hithium.jpg" alt="Hithium report" width="260"> | [Hithium.html](examples/showcase/html/Hithium.html) |
-| LaserChina | <img src="examples/showcase/images/LaserChina.jpg" alt="LaserChina report" width="260"> | [LaserChina.html](examples/showcase/html/LaserChina.html) |
-| Mileseey Golf | <img src="examples/showcase/images/Mileseey%20Golf.jpg" alt="Mileseey Golf report" width="260"> | [Mileseey Golf.html](examples/showcase/html/Mileseey%20Golf.html) |
-| Producthunt | <img src="examples/showcase/images/Producthunt.jpg" alt="Producthunt report" width="260"> | [Producthunt.html](examples/showcase/html/Producthunt.html) |
-| Trip | <img src="examples/showcase/images/Trip.jpg" alt="Trip report" width="260"> | [Trip.html](examples/showcase/html/Trip.html) |
-| Ulike | <img src="examples/showcase/images/Ulike.jpg" alt="Ulike report" width="260"> | [Ulike.html](examples/showcase/html/Ulike.html) |
-| Xiaomi | <img src="examples/showcase/images/Xiaomi.jpg" alt="Xiaomi report" width="260"> | [Xiaomi.html](examples/showcase/html/Xiaomi.html) |
-| eSignGlobal | <img src="examples/showcase/images/eSignGlobal.jpg" alt="eSignGlobal report" width="260"> | [eSignGlobal.html](examples/showcase/html/eSignGlobal.html) |
+| EasyLaTeX | <img src="examples/showcase/images/EasyLaTeX.jpg" alt="EasyLaTeX report" width="240"> | [EasyLaTeX.html](examples/showcase/html/EasyLaTeX.html) |
+| Hithium | <img src="examples/showcase/images/Hithium.jpg" alt="Hithium report" width="240"> | [Hithium.html](examples/showcase/html/Hithium.html) |
+| LaserChina | <img src="examples/showcase/images/LaserChina.jpg" alt="LaserChina report" width="240"> | [LaserChina.html](examples/showcase/html/LaserChina.html) |
+| Mileseey Golf | <img src="examples/showcase/images/Mileseey%20Golf.jpg" alt="Mileseey Golf report" width="240"> | [Mileseey Golf.html](examples/showcase/html/Mileseey%20Golf.html) |
+| Producthunt | <img src="examples/showcase/images/Producthunt.jpg" alt="Producthunt report" width="240"> | [Producthunt.html](examples/showcase/html/Producthunt.html) |
+| Trip | <img src="examples/showcase/images/Trip.jpg" alt="Trip report" width="240"> | [Trip.html](examples/showcase/html/Trip.html) |
+| Ulike | <img src="examples/showcase/images/Ulike.jpg" alt="Ulike report" width="240"> | [Ulike.html](examples/showcase/html/Ulike.html) |
+| Xiaomi | <img src="examples/showcase/images/Xiaomi.jpg" alt="Xiaomi report" width="240"> | [Xiaomi.html](examples/showcase/html/Xiaomi.html) |
+| eSignGlobal | <img src="examples/showcase/images/eSignGlobal.jpg" alt="eSignGlobal report" width="240"> | [eSignGlobal.html](examples/showcase/html/eSignGlobal.html) |
 
-## Skill location
+## Logic Flow
 
-- `skill/SKILL.md`
-- `skill/agents/openai.yaml`
-- `skill/scripts/generate_report.py`
+```mermaid
+flowchart TD
+    A[Choose Data Source] --> B{Mode}
+    B -->|Dageno API| C[Fetch Open API Data]
+    B -->|Custom JSON| D[Load JSON]
+    B -->|Google Doc| E[Export & Extract JSON]
+    C --> F[Normalize Output Fields]
+    D --> F
+    E --> F
+    F --> G[Map to Xiaomi-Locked Template]
+    G --> H[Render Dense Landscape HTML]
+    H --> I[Logo Fallback Safety Check]
+    I --> J[Export HTML + Optional Normalized JSON]
+```
 
-## Dageno API setup
+## Directory Structure
 
-Set your API key as environment variable (recommended):
+```text
+.
+├── README.md
+├── docs/
+│   ├── WORKFLOW.md
+│   ├── OUTPUT_SCHEMA.md
+│   └── TEMPLATE_RULES.md
+├── skill/
+│   ├── SKILL.md
+│   ├── agents/openai.yaml
+│   ├── references/required-fields.md
+│   └── scripts/generate_report.py
+└── examples/
+    ├── custom_input.sample.json
+    ├── output/
+    └── showcase/
+        ├── cover.jpg
+        ├── images/
+        └── html/
+```
+
+## Dageno API Key
+
+Set API key:
 
 ```bash
 export DAGENO_API_KEY="<YOUR_DAGENO_API_KEY>"
 ```
 
-Header used by API:
+Need to register first?
+- [Get API access at Dageno AI](https://dageno.ai/?utm_source=github&utm_medium=social&utm_campaign=official)
+
+Header:
 - `x-api-key: <YOUR_DAGENO_API_KEY>`
-
-Need an API key first?
-- Register at [dageno.ai](https://dageno.ai/?utm_source=github&utm_medium=social&utm_campaign=official)
-
-Official API docs:
-- [Dageno Open API Docs](https://open-api-docs.dageno.ai/)
-
-## API endpoints used by this generator
-
-- `GET /v1/open-api/brand`
-- `GET /v1/open-api/topics`
-- `GET /v1/open-api/prompts`
-- `GET /v1/open-api/citations/domains`
-- `POST /v1/open-api/geo/analysis`
-- `GET /v1/brand/favicons?domain=...` (logo rendering)
 
 ## Usage
 
-### Option A: Use Dageno API data
+### A) Dageno API mode
 
 ```bash
 python3 skill/scripts/generate_report.py \
@@ -72,7 +93,7 @@ python3 skill/scripts/generate_report.py \
   --dump-normalized examples/output/report_api.normalized.json
 ```
 
-### Option B1: Use your own JSON data
+### B) Custom JSON mode
 
 ```bash
 python3 skill/scripts/generate_report.py \
@@ -81,7 +102,7 @@ python3 skill/scripts/generate_report.py \
   --output examples/output/report_custom.html
 ```
 
-### Option B2: Use public Google Doc link containing JSON
+### C) Google Doc mode
 
 ```bash
 python3 skill/scripts/generate_report.py \
@@ -90,28 +111,36 @@ python3 skill/scripts/generate_report.py \
   --output examples/output/report_doc.html
 ```
 
-## Required fields for custom data
+## Output Field Contract
 
-See:
-- `skill/references/required-fields.md`
-- `examples/custom_input.sample.json`
+Core normalized blocks:
 
-## Notes on quality and layout
+- `brand`
+- `headline`
+- `overview`
+- `kpis`
+- `metrics`
+- `platform_compare[]`
+- `topics[]`
+- `high_value_prompts[]`
+- `existing_strengths[]`
+- `missing_trust_assets[]`
+- `sentiment`
+- `top_citing_domains[]`
+- `competitors[]`
 
-- Template quality is locked to the dense landscape frame in `examples/showcase/html/Xiaomi.html`.
-- Keep structure and spacing stable. Replace data only, do not redesign layout.
-- Data priority rule:
-1. Use Dageno API values whenever available.
-2. If missing, fallback to generated narrative text (for example `Core Diagnosis`).
-- Core blocks must always be preserved:
-1. `Core Diagnosis / KEY INSIGHT`
-2. `Brand AI Performance Check`
-3. `Top Citing Domains ⭐`
-- Logo rules:
-1. Brand logo must render in top-left.
-2. Competitor logos must render from favicon/domain source with safe fallback.
+Full details:
+- [docs/OUTPUT_SCHEMA.md](docs/OUTPUT_SCHEMA.md)
 
-## Showcase path
+## Necessary Elements (Quality Gates)
 
-- `examples/showcase/images/`
-- `examples/showcase/html/`
+- Template style must stay Xiaomi-locked
+- Core Diagnosis / KEY INSIGHT must exist
+- Brand AI Performance Check footer block must exist
+- Top Citing Domains ⭐ must exist
+- Brand logo and competitor logos must render with fallback
+- Keep dense layout, no large blank space, no overlap
+
+See full rules:
+- [docs/TEMPLATE_RULES.md](docs/TEMPLATE_RULES.md)
+- [docs/WORKFLOW.md](docs/WORKFLOW.md)
