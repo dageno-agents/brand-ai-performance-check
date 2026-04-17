@@ -1,4 +1,4 @@
 version: 1
 display_name: Brand AI Performance Check
 short_description: Generate stable dense landscape brand report HTML from API or custom data.
-default_prompt: Generate a dense landscape English Brand AI Performance Check report with fixed Xiaomi template structure and preserved logos.
+default_prompt: Generate a dense landscape English Brand AI Performance Check report with stable template structure and preserved logos.

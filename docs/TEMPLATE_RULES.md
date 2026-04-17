@@ -2,7 +2,7 @@
 
 ## Template Lock
 
-- Visual frame is locked to the Xiaomi dense template style.
+- Visual frame is locked to the stable dense template style.
 - Keep section order, spacing rhythm, and layout proportions stable.
 - Replace content only; do not redesign structure.
 

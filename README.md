@@ -6,7 +6,7 @@ Stable, data-dense, single-visual **English HTML** reporting skill for GEO brand
 
 ## Why this repo
 
-- Fixed high-quality dense template (Xiaomi-locked style)
+- Fixed high-quality dense template (stable dense template style)
 - API-first data mapping from Dageno Open API
 - Custom data mode via JSON or public Google Doc
 - Showcase-ready assets for portfolio/demo
@@ -33,7 +33,7 @@ flowchart TD
     C --> F[Normalize Output Fields]
     D --> F
     E --> F
-    F --> G[Map to Xiaomi-Locked Template]
+    F --> G[Map to stable dense template]
     G --> H[Render Dense Landscape HTML]
     H --> I[Logo Fallback Safety Check]
     I --> J[Export HTML + Optional Normalized JSON]
@@ -131,7 +131,7 @@ Full details:
 
 ## Necessary Elements (Quality Gates)
 
-- Template style must stay Xiaomi-locked
+- Template style must stay stable dense template
 - Core Diagnosis / KEY INSIGHT must exist
 - Brand AI Performance Check footer block must exist
 - Top Citing Domains ⭐ must exist

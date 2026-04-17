@@ -9,7 +9,7 @@ Use this skill when the user wants a one-page, data-dense brand report HTML with
 
 ## Quality Lock (Must Follow)
 
-1. Keep the visual frame locked to the Xiaomi dense template style.
+1. Keep the visual frame locked to the stable dense template style.
 2. Do not redesign structure, spacing system, or section order; replace content only.
 3. Keep report language in English.
 4. Use API-first data mapping; only fallback to generated narrative when data is unavailable.

@@ -12,7 +12,7 @@ flowchart TD
     C --> G[Normalize Data Model]
     D --> G
     F --> G
-    G --> H[Apply Xiaomi-Locked Template Mapping]
+    G --> H[Apply Stable Dense Template Mapping]
     H --> I[Render Dense Landscape HTML]
     I --> J[Logo Safety Check]
     J --> K[Output HTML + Optional Normalized JSON]
