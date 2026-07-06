@@ -25,146 +25,44 @@ Explore all repos / 查看全部项目: [github.com/dageno-agents](https://githu
 
 <!-- DAGENO_AGENT_NAV_END -->
 
-# Brand AI Performance Check
+# Brand AI Performance Check 中文说明
 
-![Brand AI Performance Check Cover](examples/showcase/cover.jpg)
+> 一个稳定、密集、适合展示的品牌 AI 表现诊断报告模板。
 
-Stable, data-dense, single-visual **English HTML** reporting skill for GEO brand diagnostics.
+## 它解决什么问题
 
-## Why this repo
+- 很多 GEO 数据很有价值，但不容易直接给客户或老板看。
+- 这个项目把 Dageno API 或自定义数据映射到稳定的视觉报告里，让品牌 AI 表现更容易解释和展示。
 
-- Fixed high-quality dense template (stable dense template style)
-- API-first data mapping from Dageno Open API
-- Custom data mode via JSON or public Google Doc
-- Showcase-ready assets for portfolio/demo
+## 什么时候用它
 
-## Case Showcase
+- 你要给客户展示品牌在 AI 搜索里的表现。
+- 你需要一个固定风格的高密度 HTML 报告。
+- 你想用 Dageno API 数据，也想支持自定义 JSON 或 Google Doc 数据。
 
-| Product | Visual | HTML Sample |
-|---|---|---|
-| LaserChina | <img src="examples/showcase/images/LaserChina.jpg" alt="LaserChina report" width="240"> | [LaserChina.html](examples/showcase/html/LaserChina.html) |
-| Producthunt | <img src="examples/showcase/images/Producthunt.jpg" alt="Producthunt report" width="240"> | [Producthunt.html](examples/showcase/html/Producthunt.html) |
-| Trip | <img src="examples/showcase/images/Trip.jpg" alt="Trip report" width="240"> | [Trip.html](examples/showcase/html/Trip.html) |
-| Ulike | <img src="examples/showcase/images/Ulike.jpg" alt="Ulike report" width="240"> | [Ulike.html](examples/showcase/html/Ulike.html) |
-| Xiaomi | <img src="examples/showcase/images/Xiaomi.jpg" alt="Xiaomi report" width="240"> | [Xiaomi.html](examples/showcase/html/Xiaomi.html) |
-| eSignGlobal | <img src="examples/showcase/images/eSignGlobal.jpg" alt="eSignGlobal report" width="240"> | [eSignGlobal.html](examples/showcase/html/eSignGlobal.html) |
+## 和相邻项目有什么区别
 
-## Logic Flow
+- 它是“报告呈现层”。
+- `seo-geo-audit` 是诊断框架。
+- `dageno-mcp-growth-playbook` 更偏 API/MCP 数据怎么拿和怎么组合。
 
-```mermaid
-flowchart TD
-    A[Choose Data Source] --> B{Mode}
-    B -->|Dageno API| C[Fetch Open API Data]
-    B -->|Custom JSON| D[Load JSON]
-    B -->|Google Doc| E[Export & Extract JSON]
-    C --> F[Normalize Output Fields]
-    D --> F
-    E --> F
-    F --> G[Map to stable dense template]
-    G --> H[Render Dense Landscape HTML]
-    H --> I[Logo Fallback Safety Check]
-    I --> J[Export HTML + Optional Normalized JSON]
-```
+## 主要输出
 
-## Directory Structure
+- single visual report
+- HTML sample
+- radar/quadrant/tree/heatmap/pie/gauge visuals
+- quality-gated reporting fields
 
-```text
-.
-├── README.md
-├── docs/
-│   ├── WORKFLOW.md
-│   ├── OUTPUT_SCHEMA.md
-│   └── TEMPLATE_RULES.md
-├── skill/
-│   ├── SKILL.md
-│   ├── agents/openai.yaml
-│   ├── references/required-fields.md
-│   └── scripts/generate_report.py
-└── examples/
-    ├── custom_input.sample.json
-    ├── output/
-    └── showcase/
-        ├── cover.jpg
-        ├── images/
-        └── html/
-```
+## 快速开始
 
-## Dageno API Key
+1. 准备 Dageno API key 或自定义 JSON。
+2. 选择 API mode、custom JSON mode 或 Google Doc mode。
+3. 生成 HTML 报告并替换成客户案例数据。
 
-Set API key:
+## 给中文读者的说明
 
-```bash
-export DAGENO_API_KEY="<YOUR_DAGENO_API_KEY>"
-```
+这是当前公开仓库的中文本地化入口。英文 README.md 仍然保留更完整的原始说明、命令细节和历史上下文；中文版本优先帮助国内用户快速理解这个项目是做什么的、什么时候该用、以及它和其他 Dageno Agent 项目的区别。
 
-Need to register first?
-- [Get API access at Dageno AI](https://dageno.ai/?utm_source=github&utm_medium=social&utm_campaign=official)
+## License
 
-Header:
-- `x-api-key: <YOUR_DAGENO_API_KEY>`
-
-## Usage
-
-### A) Dageno API mode
-
-```bash
-python3 skill/scripts/generate_report.py \
-  --source dageno-api \
-  --api-key "$DAGENO_API_KEY" \
-  --start-at 2026-03-01 \
-  --end-at 2026-04-15 \
-  --output examples/output/report_api.html \
-  --dump-normalized examples/output/report_api.normalized.json
-```
-
-### B) Custom JSON mode
-
-```bash
-python3 skill/scripts/generate_report.py \
-  --source custom \
-  --custom-json examples/custom_input.sample.json \
-  --output examples/output/report_custom.html
-```
-
-### C) Google Doc mode
-
-```bash
-python3 skill/scripts/generate_report.py \
-  --source custom \
-  --google-doc-url "https://docs.google.com/document/d/<DOC_ID>/edit" \
-  --output examples/output/report_doc.html
-```
-
-## Output Field Contract
-
-Core normalized blocks:
-
-- `brand`
-- `headline`
-- `overview`
-- `kpis`
-- `metrics`
-- `platform_compare[]`
-- `topics[]`
-- `high_value_prompts[]`
-- `existing_strengths[]`
-- `missing_trust_assets[]`
-- `sentiment`
-- `top_citing_domains[]`
-- `competitors[]`
-
-Full details:
-- [docs/OUTPUT_SCHEMA.md](docs/OUTPUT_SCHEMA.md)
-
-## Necessary Elements (Quality Gates)
-
-- Template style must stay stable dense template
-- Core Diagnosis / KEY INSIGHT must exist
-- Brand AI Performance Check footer block must exist
-- Top Citing Domains ⭐ must exist
-- Brand logo and competitor logos must render with fallback
-- Keep dense layout, no large blank space, no overlap
-
-See full rules:
-- [docs/TEMPLATE_RULES.md](docs/TEMPLATE_RULES.md)
-- [docs/WORKFLOW.md](docs/WORKFLOW.md)
+请参考英文 README 和仓库内的 LICENSE 文件。
